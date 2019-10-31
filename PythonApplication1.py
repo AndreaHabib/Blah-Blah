@@ -11,7 +11,7 @@ from discord import Game
 from discord import Emoji, Message
 from discord.voice_client import VoiceClient
 BOT_PREFIX = ("?", "!")
-TOKEN = "NjM2NzE3OTc5NzczNTY2OTg2.XbNrLw.-lwTJYGn4-og9uzr5rFnLRdjpro"
+TOKEN = "token"
 client = Bot(command_prefix=BOT_PREFIX)
 #client = discord.Client()
 #channel = client.get_channel("637405419999854613")
