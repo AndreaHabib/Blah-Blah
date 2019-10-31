@@ -14,7 +14,7 @@ BOT_PREFIX = ("?", "!")
 TOKEN = "token"
 client = Bot(command_prefix=BOT_PREFIX)
 #client = discord.Client()
-#channel = client.get_channel("637405419999854613")
+#channel = client.get_channel("id")
 @client.command(name = 'test', description = 'Only for test purposes', brief = 'Test', pass_context = True)
 async def test(context):
    possible_responses = [
@@ -56,11 +56,11 @@ async def nickname(ctx, member : discord.User, nickname):
     await client.change_nickname(member, nickname)
 @client.command(pass_context = True)
 async def join(ctx):
-    channel = client.get_channel("637405419999854621")
+    channel = client.get_channel("id")
     await client.join_voice_channel(channel)
 @client.command(pass_context = True)
 async def leave(ctx):
-    channel = client.get_channel("637405419999854621")
+    channel = client.get_channel("id")
     print("Sorry, it takes me a while to leave!")
     server = ctx.message.server
     voice_client = await client.join_voice_channel(channel)
