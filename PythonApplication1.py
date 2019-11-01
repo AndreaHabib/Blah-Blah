@@ -1,6 +1,10 @@
 import discord
 import youtube_dl
 import asyncio
+from ctypes.util import find_library
+import youtube_dl as yt
+from discord import opus
+import nacl
 import threading
 import re
 from random import randint
@@ -10,17 +14,18 @@ import random
 from discord import Game
 from discord import Emoji, Message
 from discord.voice_client import VoiceClient
+players = {}
 BOT_PREFIX = ("?", "!")
-TOKEN = "token"
+TOKEN = "NjM2NzE3OTc5NzczNTY2OTg2.Xbripg.EjkPfQBksccwaN24tGt__VY2QA8"
 client = Bot(command_prefix=BOT_PREFIX)
 #client = discord.Client()
-#channel = client.get_channel("id")
+#channel = client.get_channel("637405419999854613")
 @client.command(name = 'test', description = 'Only for test purposes', brief = 'Test', pass_context = True)
-async def test(context):
+async def test(ctx):
    possible_responses = [
        'Test', 'Testing', 'Hey', 'Nice'
        ]
-   await client.say(random.choice(possible_responses) + " " + context.message.author.mention)
+   await client.say(random.choice(possible_responses) + " " + ctx.message.author.mention)
 @client.command(name = 'kick', description = 'To kick someone', brief = 'Kick', pass_context = True)
 async def kick(ctx, member : discord.User, *, reason = None):
     await client.kick(member)
@@ -54,26 +59,49 @@ async def clear(ctx, msglimit : int):
 @client.command(pass_context = True, brief = 'change nickname')
 async def nickname(ctx, member : discord.User, nickname):
     await client.change_nickname(member, nickname)
-@client.command(pass_context = True)
+@client.command(name = "join",pass_context = True)
 async def join(ctx):
-    channel = client.get_channel("id")
+    channel = client.get_channel("637405419999854621")
     await client.join_voice_channel(channel)
-@client.command(pass_context = True)
-async def leave(ctx):
-    channel = client.get_channel("id")
-    print("Sorry, it takes me a while to leave!")
+
+@client.command(name = "check",pass_context = True)
+async def check(ctx):
     server = ctx.message.server
-    voice_client = await client.join_voice_channel(channel)
-    await voice_client.disconnect()
+    if client.is_voice_connected(server):
+        print("Yes")
+    else:
+        print("No")
+
+@client.command(name = "leave",pass_context = True)
+async def leave(ctx):
+ channel = client.get_channel("637405419999854621")
+ voice_client = client.voice_client_in(channel)
+ if voice_client:
+        await voice_client.disconnect(channel)
+        print("Bot left the voice channel")
+ else:
+        print("Bot was not in channel")
 @client.command(pass_context = True)
 async def play(ctx, url):
-    voice_channel = ctx.message.author.voice.voice_channel
-    voice_client = await client.join_voice_channel(voice_channel)
-
-    url = 'https://www.youtube.com/watch?v=7ysFgElQtjI'
-    player = await voice_client.create_ytdl_player(url)
+    channel = client.get_channel("637405419999854621")
+    voice = client.join_voice_channel(channel)
+    use_avconv = ('use_avconv', False)
+    opts = {
+            'format': 'webm[abr>0]/bestaudio/best',
+            'prefer_ffmpeg': not use_avconv
+        }
+    player = voice.create_ytdl_player('song url',ytdl_options=opts)
+    # ffmpeg player works
+    # p = voice.create_ffmpeg_player(player.download_url)
+    player.volume = 0.5
     player.start()
-
+    print('playing')
+#@client.event
+#async def on_member_join(member):
+#    server = member.server
+#    for user in server.members:
+#        if user.server_permissions.administrator:
+#          await client.send_message(user, "A new member has joined")
 @client.event
 async def on_ready():
     await client.change_presence(game=Game(name= "Joker", type=3)) #3 watch - 2 listen - 1 stream - 0 play
