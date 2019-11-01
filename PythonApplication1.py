@@ -16,10 +16,10 @@ from discord import Emoji, Message
 from discord.voice_client import VoiceClient
 players = {}
 BOT_PREFIX = ("?", "!")
-TOKEN = "NjM2NzE3OTc5NzczNTY2OTg2.Xbripg.EjkPfQBksccwaN24tGt__VY2QA8"
+TOKEN = ""
 client = Bot(command_prefix=BOT_PREFIX)
 #client = discord.Client()
-#channel = client.get_channel("637405419999854613")
+#channel = client.get_channel("")
 @client.command(name = 'test', description = 'Only for test purposes', brief = 'Test', pass_context = True)
 async def test(ctx):
    possible_responses = [
@@ -61,7 +61,7 @@ async def nickname(ctx, member : discord.User, nickname):
     await client.change_nickname(member, nickname)
 @client.command(name = "join",pass_context = True)
 async def join(ctx):
-    channel = client.get_channel("637405419999854621")
+    channel = client.get_channel("")
     await client.join_voice_channel(channel)
 
 @client.command(name = "check",pass_context = True)
@@ -74,7 +74,7 @@ async def check(ctx):
 
 @client.command(name = "leave",pass_context = True)
 async def leave(ctx):
- channel = client.get_channel("637405419999854621")
+ channel = client.get_channel("")
  voice_client = client.voice_client_in(channel)
  if voice_client:
         await voice_client.disconnect(channel)
@@ -83,7 +83,7 @@ async def leave(ctx):
         print("Bot was not in channel")
 @client.command(pass_context = True)
 async def play(ctx, url):
-    channel = client.get_channel("637405419999854621")
+    channel = client.get_channel("")
     voice = client.join_voice_channel(channel)
     use_avconv = ('use_avconv', False)
     opts = {
